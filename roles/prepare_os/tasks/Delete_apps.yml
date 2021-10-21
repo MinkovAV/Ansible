@@ -1,0 +1,11 @@
+---
+- name: Delete app
+  apt:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ removeble_app }}"
+  notify:
+    - Remove folders
+  become: true
+...

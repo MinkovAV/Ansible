@@ -1,0 +1,34 @@
+all:
+  hosts:
+
+  children:
+    ubuntu:
+      hosts:
+        Client1:
+        Client2:
+        Client3:
+        Client4:
+        Client5:
+        Client6:
+        Docker:
+    kuber_master:
+      hosts:
+        Client1:
+        Client2:
+        Client3:
+    kuber_nodes:
+      hosts:
+        Client1:
+        Client2:
+        Client3:
+        Client4:
+        Client5:
+        Client6:
+    kuber_claster:
+      children:
+        kuber_nodes:
+        kuber_master:
+    minio:
+      children:
+        kuber_nodes:
+        kuber_master:

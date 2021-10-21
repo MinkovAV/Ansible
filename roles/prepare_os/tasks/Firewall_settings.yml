@@ -1,0 +1,17 @@
+---
+- name: Configuratin firewall UFW
+  ufw:
+    state: enabled
+    policy: allow
+
+- ufw:
+    rule: allow
+    name: OpenSSH
+
+- ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - "{{ allow_tcp_ports }}"
+...

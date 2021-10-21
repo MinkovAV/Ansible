@@ -1,0 +1,5 @@
+---
+# defaults file for prepare_os
+ansible_user: client
+ansible_ssh_pass: 1qaZ15795321
+...

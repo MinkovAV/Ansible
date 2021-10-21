@@ -1,0 +1,26 @@
+---
+# tasks file for prepare_os
+
+- import_tasks: Set_multiple_authorized_keys.yml
+
+- import_tasks: Set_passwordless_sudo.yml
+
+- import_tasks: Set_a_hostname.yml
+
+- import_tasks: Update_sshd_configuration.yml
+
+- import_tasks: Update_grade_os.yml
+
+- import_tasks: Install_software.yml
+
+- import_tasks: Delete_apps.yml
+
+- import_tasks: Set_timezone.yml
+
+- import_tasks: Firewall_settings.yml
+
+
+#- name: Reboot initiated by Ansible
+#- import_tasks: Reboot.yml
+#  become: yes
+...

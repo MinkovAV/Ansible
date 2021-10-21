@@ -1,0 +1,17 @@
+---
+ansible_host: 192.168.0.194
+ssh_port: 2022
+ansible_port: "{{ ssh_port | default('22') }}"
+ansible_connection: ssh
+ansible_user: root
+
+hostname: Client3
+ansible_sudo_pass: 1qaZ15795321
+
+TIMEZONE: "Asia/Yekaterinburg"
+
+#For role minio
+disks_for_minio:
+  - { disk: '/dev/sdb', partition: '/dev/sdb1', mount_pint: '/mnt/disk1'}
+  - { disk: '/dev/sdc', partition: '/dev/sdc1', mount_pint: '/mnt/disk2'}
+...

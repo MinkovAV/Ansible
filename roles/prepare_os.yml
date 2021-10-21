@@ -1,0 +1,7 @@
+---
+- name: Prepare operation system
+  hosts: ubuntu
+
+  roles:
+    - prepare_os
+...

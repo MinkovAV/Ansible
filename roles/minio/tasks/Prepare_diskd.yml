@@ -1,0 +1,27 @@
+---
+- name: Create a new ext4 primary partition
+  parted:
+    device: "{{ item.disk }}"
+    number: 1
+    state: present
+    fs_type: ext4
+  with_items:
+    - "{{ disks_for_minio }}"
+
+- name: format partiton to ext4
+  filesystem:
+     fstype: ext4
+     dev: "{{ item.partition }}"
+  with_items:
+    - "{{ disks_for_minio }}"
+
+- name: Mount
+  mount:
+    path: "{{ item.mount_pint }}"
+    src: "{{ item.partition }}" 
+    fstype: ext4
+    state: mounted
+    boot: true
+  with_items:
+    - "{{ disks_for_minio }}"
+...

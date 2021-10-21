@@ -1,0 +1,6 @@
+---
+- name: Prepare minio
+  
+  roles:
+    - minio
+...

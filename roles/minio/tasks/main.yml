@@ -1,0 +1,8 @@
+---
+# tasks file for minio
+
+- import_tasks: prepare_diskd.yml
+
+- import_tasks: Pull_image_for_docker.yml
+
+

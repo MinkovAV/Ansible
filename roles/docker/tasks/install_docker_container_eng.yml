@@ -1,0 +1,138 @@
+---
+- name: Install Docker requirements
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+    - lsb-release
+    - software-properties-common
+  when:
+    ansible_distribution == 'Ubuntu'
+  tags:
+    - prepare
+
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+  tags:
+    - prepare
+
+- name: Add Kubernetes K8S official GPG key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  tags:
+    - prepare
+
+
+- name: Verify that we have the key with the fingerprint
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  tags:
+    - prepare
+
+
+- name: Add repository
+  apt_repository:
+    repo: deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/{{ ansible_system | lower }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+    state: present
+    filename: docker
+  tags:
+    - prepare
+
+- name: Add repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes
+  tags:
+    - prepare
+
+- name: Update apt packages
+  apt:
+    update_cache: yes
+  tags:
+    - prepare
+
+- name: Install kubernetes
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    #notify: Start docker on boot
+  loop:
+    - kubelet 
+    - kubeadm 
+    - kubectl
+  tags:
+    - install
+
+- name: Install docker
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    #notify: Start docker on boot
+  loop:
+    - docker-ce
+    - docker-ce-cli 
+    - containerd.io
+  tags:
+    - install
+
+- name: Install and upgrade pip
+  pip:
+    name: pip
+    extra_args: --upgrade
+    executable: pip3
+
+- name: install certain python modules for docker
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker
+
+
+#- name: Creating users "{{ docker_username }}" and add to "docker" group
+#  user:
+#    name: "{{ docker_username }}"
+#    groups: "docker"
+#    shell: /bin/bash
+#    append: yes
+#    generate_ssh_key: yes
+#    ssh_key_bits: 4096
+#    ssh_key_file: .ssh/id_rsa
+#    password: "{{ docker_username_upassword | password_hash('sha512') }}"
+#  tags:
+#    - install
+
+#- name: Add remote "client" user to "docker" group
+#  user:
+#    name: "docker"
+#    group: "docker"
+#    append: yes
+#  tags:
+#    - install
+
+#- name: Install docker-compose
+#  get_url: 
+#    url : https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-linux-x86_64
+#    dest: /usr/local/bin/docker-compose
+#    mode: 'u+x,g+x'
+#  tags:
+#    - install
+
+#- name: Hold docker version
+#  when: ansible_os_family == "Debian"
+#  dpkg_selections:
+#    name: docker-ce
+#    selection: hold
+...

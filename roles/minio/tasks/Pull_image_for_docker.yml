@@ -1,0 +1,6 @@
+---
+- name: pull image minio
+  community.docker.docker_image:
+    name: minio/minio
+    source: pull 
+...

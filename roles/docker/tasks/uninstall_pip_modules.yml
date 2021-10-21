@@ -1,0 +1,9 @@
+---
+#- name: UnInstall docker-py
+#  pip:
+#    name: "{{ item }}"
+#    state: absent
+#  with_items:
+#    - docker-py
+#    - docker
+...

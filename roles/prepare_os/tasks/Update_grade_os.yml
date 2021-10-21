@@ -1,0 +1,14 @@
+---
+- name: Update os
+  apt:
+    update_cache: yes
+    upgrade: yes
+  become: yes
+
+- name: Updgrade os
+  apt:
+    upgrade: dist
+  become: yes
+  notify:
+  - Reboot initiated by Ansible
+...

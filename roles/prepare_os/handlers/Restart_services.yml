@@ -1,0 +1,12 @@
+---
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted
+
+- name: Restart NTP
+  service:
+    name: NTP
+    state: restarted
+
+...

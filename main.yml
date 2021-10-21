@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: prepare_os, tags: docker }
+    
+    #- { role: docker, tags: docker }
+    
+    #- { role: minio, tags: docker }
+
+    #- { role: test, tags: docker }
+...

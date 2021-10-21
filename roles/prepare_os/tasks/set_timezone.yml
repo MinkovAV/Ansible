@@ -1,0 +1,7 @@
+---
+- name: Set timezone
+  timezone:
+    name: "{{ TIMEZONE | default('Asia/Yekaterinburg') }}"
+  notify:
+    - Restart NTP
+...

@@ -1,0 +1,9 @@
+---
+- name: Remove folders
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ removeble_folders }}"
+
+...

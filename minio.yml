@@ -1,0 +1,8 @@
+---
+- hosts: minio
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: prepare_os, tags: prepare }
+    - { role: minio, tags: prepare }
+...
