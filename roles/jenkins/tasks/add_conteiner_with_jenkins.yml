@@ -1,0 +1,4 @@
+- name: pull image of jenkins from hub.docker
+  docker_image:
+    name: jenkins/jenkins:lts-jdk11
+    source: pull

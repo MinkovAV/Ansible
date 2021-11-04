@@ -6,5 +6,5 @@
     key: '{{ lookup("file", item) }}'
   with_fileglob:
     - public_keys/*.pub
-  become: yes
+  become: true
 ...

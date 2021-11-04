@@ -1,0 +1,6 @@
+- name: install certain python modules for docker
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker

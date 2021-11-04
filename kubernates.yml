@@ -1,9 +1,0 @@
----
-- hosts: kuber_claster
-  gather_facts: yes
-  become: yes
-  roles:
-
-    - { role: docker, tags: docker }
-
-...

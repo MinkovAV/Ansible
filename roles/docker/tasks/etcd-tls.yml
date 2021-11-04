@@ -1,5 +1,5 @@
 ---
-- name:  create local tmp directory
+- name: create local tmp directory
   file:
     path: "{{ item }}"
     state: directory
@@ -15,10 +15,9 @@
     path: /opt/etcd-ssl
     state: "{{ item }}"
   loop:
-    - absent
-    - directory
+    - "absent"
+    - "directory"
   tags: ssl
-
 
 - name: install cfssl
   get_url:
@@ -30,7 +29,7 @@
     - { url: 'https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64', dest: '/usr/local/bin/cfssljson' }
   tags: ssl
   when: 
-    inventory_hostname == "{{ hostvars[groups['kuber_master'][0]]['inventory_hostname'] }}"
+    inventory_hostname in groups['kuber_master']
 
 
 - name: create ca-config.json
@@ -39,7 +38,7 @@
     dest: /opt/etcd-ssl/ca-config.json
   tags: ssl
   when: 
-    inventory_hostname == "{{ hostvars[groups["kuber_master"][0]]["inventory_hostname"] }}"
+    inventory_hostname in groups['kuber_master']
 
 
 - name: create ca-csr.json
@@ -47,7 +46,8 @@
     src: ca-csr.json.j2
     dest: /opt/etcd-ssl/ca-csr.json
   tags: ssl
-  when: inventory_hostname == "{{ hostvars[groups['kuber_master'][0]]['inventory_hostname'] }}"
+  when: 
+    inventory_hostname in groups['kuber_master']
 
 
 - name: generating a new CA

@@ -1,26 +1,26 @@
 ---
 # tasks file for prepare_os
+- import_tasks: Define_ssh_port.yml                              # Определяем используется ли стандартный порт SSH 22
 
-- import_tasks: Set_multiple_authorized_keys.yml
+- import_tasks: Set_multiple_authorized_keys.yml                 # Добавляем публичные ключи для авторизации
 
-- import_tasks: Set_passwordless_sudo.yml
+- import_tasks: Set_passwordless_sudo.yml                        # Убираем пароль при вводе команды sudo
 
-- import_tasks: Set_a_hostname.yml
+- import_tasks: Set_hostname.yml                                 # Изменяем имя хоста согласно host_vars
 
-- import_tasks: Update_sshd_configuration.yml
+- import_tasks: Set_hosts_file.yml                               # Настраиваем фаил hosts прописывая всех
 
-- import_tasks: Update_grade_os.yml
+- import_tasks: Update_sshd_configuration.yml                    # Настраиваем SSH
 
-- import_tasks: Install_software.yml
+- import_tasks: Gathering_facts.yml                              # собираем факты
 
-- import_tasks: Delete_apps.yml
+- import_tasks: Update_grade_os.yml                              # Обновление ПО и перезагрузка
 
-- import_tasks: Set_timezone.yml
+- import_tasks: Install_software.yml                             # Устанавливаем базовый набор пакетов из списка {instaleble_packages} 
 
-- import_tasks: Firewall_settings.yml
+- import_tasks: Delete_apps.yml                                  # Удаляем ненужные пакеты из списка {removeble_app}
 
+- import_tasks: Set_timezone.yml                                 # Настройка часового пояса из TIMEZONE
 
-#- name: Reboot initiated by Ansible
-#- import_tasks: Reboot.yml
-#  become: yes
+- import_tasks: Firewall_settings.yml                            # Включение и настройка Firewall
 ...

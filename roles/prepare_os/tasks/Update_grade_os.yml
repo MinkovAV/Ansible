@@ -10,5 +10,5 @@
     upgrade: dist
   become: yes
   notify:
-  - Reboot initiated by Ansible
+  - Reboot_host
 ...

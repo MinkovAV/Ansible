@@ -7,6 +7,17 @@
   service: name=kubelet state=restarted
 
 - name: restart etcd
-  service: name=etcd state=restarted
+  service: 
+    name: etcd
+    state: restarted
 
+- name: restart_docker
+  service: 
+    name: docker
+    state: restarted
+
+- name: restart_haproxy
+  service: 
+    name: haproxy
+    state: restarted
 ...

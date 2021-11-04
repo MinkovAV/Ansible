@@ -1,16 +1,48 @@
 ---
 # tasks file for docker
-- name: UnInstall pip modules
-  include_tasks: uninstall_pip_modules.yml
 
+# Подгружаем дополнительные модули ядра
+#- name: Prepare systemctl
+#  import_tasks: sysctl.yml
+
+# Удаляем модули pip если это необходимо
+# name: UnInstall pip modules
+  #include_tasks: uninstall_pip_modules.yml
+
+# Отключение SWAP
+- name: SWAP disable
+  include_tasks: disable_swap.yml
+
+# Подгружаем необходимые модули в ядро
+#- name: Load modules to core
+#  include_tasks: load_modules_to_core.yml
+
+# Устаовка Kubernetes
+- name: Install Kubernetes
+  include_tasks: kubernetes.yml
+
+# Устанавливаем Docker
 - name: Install Docker container engine
-  include_tasks: install_docker_container_eng.yml
+  include_tasks: docker.yml
 
-- name: Install certs for ETCD
-  include_tasks: etcd-tls.yml
-
+#Устанавливаем etcd
 - name: Install ETCD
   include_tasks: etcd.yml
+
+# name: Instal HAproxy
+  #include_tasks: install_HAproxy.yml
+
+#Устанавливаем сертификаты
+#- name: Install certs for ETCD
+#  include_tasks: etcd-tls.yml
+
+#Устанавливаем сертификаты
+#- name: Install ETCD
+  #include_tasks: etcd.yml
+
+#- name: Install Kubernetes
+#  include_tasks: kubernetes.yml
+
 
 #- name: Copy Docker engine service file
 #  template:

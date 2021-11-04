@@ -1,0 +1,46 @@
+---
+#Добавляем ключ от Kubernetes
+- name: Add Kubernetes K8S official GPG key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  tags:
+    - prepare
+
+#Проверяем что ключи добавелись
+- name: Verify that we have the key with the fingerprint
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  loop:
+    - https://download.docker.com/linux/ubuntu/gpg
+    - https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  tags:
+    - prepare
+
+- name: Install kubernetes
+  apt:
+    name: "{{ item.name }}={{ item.version }}"
+    #state: present
+    #update_cache: yes
+    #notify: Start docker on boot
+  loop:
+    "{{ software_kubernetes }}"
+  tags:
+    - install
+
+# Делаем так что бы версии не обновлялись
+#- name: Hold kubeadm
+#  dpkg_selections:
+#    name: "{{ item.name }}"
+#    selection: hold
+#  loop:
+#    "{{ software_kubernetes }}"
+
+- name: Create etcd env file
+  template:
+    src: kubeadm-init.yaml.j2
+    dest: /root/kubeadm-init.yaml
+  tags: etcd
+  when: 
+    inventory_hostname in groups['kuber_master']
+...

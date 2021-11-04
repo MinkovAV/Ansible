@@ -1,0 +1,41 @@
+---
+# Настройка SSH подключения для Ansible к клинтам
+ansible_port: "{{ ssh_port }}"         # Порт для подключения по SSH получаем значение при запуске RUN_ME.ssh от пользователя
+ansible_user: root                   # Имя пользователя от которого происходит подключение к удалённому серверу
+#ansible_user: client
+ansible_password: 1qaZ15795321         # Пароль для подключения по ЫЫР
+
+set_ssh_port: 2022
+
+TIMEZONE: "Asia/Yekaterinburg"
+
+docker_username: docker
+docker_username_upassword: "{{ vault_SUDO_PASSWORD }}"
+ansible_sudo_pass:         "{{ vault_SUDO_PASSWORD }}"
+
+instaleble_packages:
+  - "mc"
+  - "curl"
+  - "tree"
+  - "bash-completion"
+  - "wget"
+
+removeble_app:
+  - "cloud-init"
+
+removeble_folders:
+  - "/etc/cloud/"
+  - "/var/lib/cloud/"
+
+core_modules:
+  - "br_netfilter"
+  - "overlay"
+
+allow_tcp_ports:
+  - 22
+  - 2022
+
+
+CIDR: 10.43.0.0/16
+calico_version: 3.20.2
+...

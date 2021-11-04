@@ -1,0 +1,26 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"          #Адрес на котором слушает API-сервер
+---
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+kubernetesVersion: stable                                                             #Версия кластера которую мы будем устанавливать
+apiServer:                                                                            #Список хостов для которых kubeadm генерирует сертификаты
+  certSANs:
+{% for host in groups['kuber_master'] %}
+  - {{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}
+{% endfor %}
+  - 127.0.0.1
+controlPlaneEndpoint: {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}          #адрес мастера или балансировщика нагрузки
+etcd:
+  external:
+    endpoints:
+{% for host in groups['kuber_master'] %}
+    - http://{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}:2379
+{% endfor %}
+networking:
+  podSubnet: 192.168.0.0/16                                                           # подсеть для подов, у каждого CNI она своя.
+  serviceSubnet: "10.96.0.0/12"
+  dnsDomain: "cluster.local"

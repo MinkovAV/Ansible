@@ -4,14 +4,16 @@
     path: /opt/archives
     state: directory
   tags: etcd
-
+  when: 
+    inventory_hostname in groups['kuber_master']
 
 - name: Get etcd archive
   get_url:
     url: https://github.com/coreos/etcd/releases/download/{{etcd_version}}/etcd-{{etcd_version}}-linux-amd64.tar.gz
     dest: /opt/archives/etcd-{{etcd_version}}-linux-amd64.tar.gz
   tags: etcd
-
+  when: 
+    inventory_hostname in groups['kuber_master']
 
 - name: Get and unpack etcd
   shell: |
@@ -19,21 +21,35 @@
   args:
     chdir: /opt/archives
   tags: etcd
-
+  when: 
+    inventory_hostname in groups['kuber_master']
 
 - name: Create systemd service for etcd
   template:
     src: etcd.service.j2
     dest: "/etc/systemd/system/etcd.service"
   tags: etcd
+  when: 
+    inventory_hostname in groups['kuber_master']
 
+#- name: Create etcd env file
+#  template:
+#    src: create-config.sh.j2
+#    dest: /root/create-config.sh
+#    owner: root
+#    group: root
+#    mode: '0744'
+#  tags: etcd
+#  when: 
+#    inventory_hostname in groups['kuber_master']
 
 - name: Create etcd env file
   template:
     src: etcd.env.j2
     dest: /etc/etcd.env
   tags: etcd
-
+  when: 
+    inventory_hostname in groups['kuber_master']
 
 - name: Enable and start etc cluster
   systemd:
@@ -42,4 +58,7 @@
     enabled: yes
     daemon_reload: yes
   tags: etcd
+  when: 
+    inventory_hostname in groups['kuber_master']
+
 ...

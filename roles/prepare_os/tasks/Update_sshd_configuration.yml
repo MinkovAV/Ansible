@@ -9,6 +9,6 @@
     validate: /usr/sbin/sshd -t -f %s
     backup: yes
   notify:
-    - Restart sshd
+  - RestartSSHd
   become: yes
 ...

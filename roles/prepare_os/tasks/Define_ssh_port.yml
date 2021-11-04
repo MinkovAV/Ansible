@@ -1,0 +1,57 @@
+---
+########################################################################################################
+#
+# Проверяем если порт не 22 то выставляем тот порт который был задан при запуске RUN_ME.sh
+# Это нужно когда добавляется новый узел с настройками по умолчанию.
+#
+# Для работы необходимо что бы на сервере Ansible был запушен sshd сервер
+#    - service ssh status
+#    - sudo service ssh start
+#
+########################################################################################################
+
+#- name: Define ssh port
+#  local_action:
+#    module: wait_for
+#    port: 22
+#    timeout: 5 
+#    host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+#    search_regex: OpenSSH
+#  register: var_default_ssh
+#  ignore_errors: true
+
+- name: Define ssh port (is in standart 22)
+  wait_for:
+    port: 22
+    host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+    search_regex: OpenSSH
+    timeout: 5
+  register: var_default_ssh
+  ignore_errors: true
+  vars:
+    ansible_connection: local
+
+#- name: Debug msg
+#  debug:
+#    msg: "{{ var_default_ssh }}"
+
+- name: set ansible_ssh_port to default
+  set_fact: 
+    ansible_ssh_port: 22
+  when: var_default_ssh.elapsed < 5
+
+- name: test ssh on custom port
+  wait_for:
+    port: "{{ ssh_port }}"
+    host: "{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}"
+    search_regex: OpenSSH
+    timeout: 5
+  register: high_ssh
+  when: var_default_ssh.elapsed >= 5
+  ignore_errors: true
+  
+- name: set ansible_ssh_port high
+  set_fact: 
+    ansible_port: "{{ ssh_port }}"
+  when: var_default_ssh.elapsed >= 5 and high_ssh.elapsed < 5
+...

@@ -1,12 +1,12 @@
 ---
-- name: Restart sshd
+- name: RestartSSHd
   service:
-    name: sshd
+    name: ssh
     state: restarted
 
-- name: Restart NTP
-  service:
-    name: NTP
-    state: restarted
+#- name: Restart NTP
+#  service:
+#    name: ntpd
+#    state: restarted
 
 ...

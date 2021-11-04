@@ -1,6 +1,9 @@
 ---
 - name: Prepare minio
-  
+  hosts: minio
+  gather_facts: yes
+  become: yes
+
   roles:
     - minio
 ...

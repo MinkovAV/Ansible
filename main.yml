@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  gather_facts: yes
+  gather_facts: no
   become: yes
   roles:
     - { role: prepare_os, tags: docker }
@@ -10,4 +10,7 @@
     #- { role: minio, tags: docker }
 
     #- { role: test, tags: docker }
+
+    #- { role: jenkins, tags: docker }
+
 ...

@@ -12,7 +12,7 @@
 
 Include /etc/ssh/sshd_config.d/*.conf
 
-Port {{ SSH_PORT_for_sshd_conf | default(22) }}
+Port {{ set_ssh_port }}
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::

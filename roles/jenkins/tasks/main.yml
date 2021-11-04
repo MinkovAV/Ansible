@@ -1,0 +1,6 @@
+---
+# tasks file for jenkins
+- name: add conteiner with jenkins
+  include_tasks: add_conteiner_with_jenkins.yml
+
+...
